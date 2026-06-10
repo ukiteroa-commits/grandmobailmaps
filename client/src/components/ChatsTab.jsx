@@ -6,12 +6,14 @@ import { MAP_HOUSES } from '../data/houses.js';
 import ChatWindow from './ChatWindow.jsx';
 import { useAuth } from '../auth/AuthContext.jsx';
 
-const ALL_SERVERS = [
-  { id: '32', name: 'Сервер 32', desc: 'Основной сервер дашборда', color: '#7c3aed', badge: '32' },
-  { id: '38', name: 'Сервер 38', desc: 'Дополнительный сервер', color: '#3b82f6', badge: '38' },
-  { id: 'other', name: 'Другой сервер', desc: 'Остальные сервера GMRP', color: '#06b6d4', badge: '•' },
-];
+// Функция для получения цвета сервера
+const getServerColor = (id) => {
+  if (id === '32') return '#7c3aed';
+  if (id === '38') return '#3b82f6';
+  return '#06b6d4';
+};
 
+// Строит список чатов для выбранного сервера (одинаковый для всех серверов)
 const buildChats = (server) => [
   {
     id: 'general',
@@ -63,8 +65,14 @@ export default function ChatsTab() {
     );
   }
 
-  // Только сервера, на которых играет пользователь
-  const myServers = ALL_SERVERS.filter((s) => user.servers.includes(s.id));
+  // Строим список серверов пользователя (от 1 до 38)
+  const myServers = user.servers.map(id => ({
+    id: id,
+    name: `Сервер ${id}`,
+    desc: id === '32' ? 'Основной сервер' : id === '38' ? 'Дополнительный сервер' : 'Игровой сервер',
+    color: getServerColor(id),
+    badge: id
+  }));
 
   // ---------- Шаг 1: выбор сервера ----------
   if (!server) {

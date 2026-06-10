@@ -5,11 +5,7 @@ import { useAuth } from '../auth/AuthContext.jsx';
 import { useToast } from './Layout.jsx';
 import ProfileTab from './ProfileTab.jsx';
 
-const SERVER_OPTIONS = [
-  { id: '32', label: 'Сервер 32', color: '#7c3aed' },
-  { id: '38', label: 'Сервер 38', color: '#3b82f6' },
-  { id: 'other', label: 'Другой', color: '#06b6d4' },
-];
+const ALL_SERVER_IDS = Array.from({ length: 38 }, (_, i) => String(i + 1));
 
 export default function AuthTab() {
   const { user, loading } = useAuth();
@@ -28,14 +24,23 @@ export default function AuthTab() {
 function AuthForm() {
   const { login, register } = useAuth();
   const toast = useToast();
-  const [mode, setMode] = useState('login'); // 'login' | 'register'
+  const [mode, setMode] = useState('login');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [servers, setServers] = useState(['32']);
   const [busy, setBusy] = useState(false);
 
-  const toggleServer = (id) =>
-    setServers((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  const toggleServer = (id) => {
+    if (servers.includes(id)) {
+      setServers((s) => s.filter((x) => x !== id));
+    } else {
+      if (servers.length >= 5) {
+        toast('Можно выбрать не более 5 серверов');
+        return;
+      }
+      setServers((s) => [...s, id]);
+    }
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -79,11 +84,10 @@ function AuthForm() {
         <p className="mt-1 text-sm text-white/40">
           {mode === 'login'
             ? 'Войдите, чтобы видеть свои объявления и писать в чаты'
-            : 'Укажите игровой ник и сервера, на которых играете'}
+            : 'Выберите сервера (до 5), на которых играете'}
         </p>
       </motion.div>
 
-      {/* Переключатель вход/регистрация */}
       <div className="glass-card mb-5 flex p-1">
         {[
           { id: 'login', label: 'Вход', icon: LogIn },
@@ -143,30 +147,30 @@ function AuthForm() {
         {mode === 'register' && (
           <div>
             <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">
-              На каких серверах играешь?
+              Сервера (1-38, до 5 штук)
             </div>
-            <div className="flex gap-2">
-              {SERVER_OPTIONS.map((s) => {
-                const on = servers.includes(s.id);
+            <div className="grid grid-cols-6 gap-1.5 max-h-48 overflow-y-auto p-1">
+              {ALL_SERVER_IDS.map((id) => {
+                const isSelected = servers.includes(id);
                 return (
                   <button
                     type="button"
-                    key={s.id}
-                    onClick={() => toggleServer(s.id)}
-                    className={`flex-1 rounded-xl py-2.5 text-xs font-bold transition-all ${
-                      on ? 'text-white' : 'border border-white/10 bg-white/[0.03] text-white/40'
+                    key={id}
+                    onClick={() => toggleServer(id)}
+                    className={`h-9 w-9 rounded-lg text-xs font-bold transition-all ${
+                      isSelected 
+                        ? 'text-white bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/30' 
+                        : 'bg-white/5 border border-white/10 text-white/40 hover:bg-white/10'
                     }`}
-                    style={
-                      on
-                        ? { background: s.color, boxShadow: `0 0 15px ${s.color}70` }
-                        : undefined
-                    }
                   >
-                    {s.label}
+                    {id}
                   </button>
                 );
               })}
             </div>
+            <p className="text-[10px] text-white/30 mt-2 text-center">
+              Выбрано: {servers.length} / 5
+            </p>
           </div>
         )}
 

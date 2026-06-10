@@ -5,11 +5,7 @@ import { useAuth, api } from '../auth/AuthContext.jsx';
 import { useToast } from './Layout.jsx';
 import ListingCard from './ListingCard.jsx';
 
-const SERVER_OPTIONS = [
-  { id: '32', label: '32', color: '#7c3aed' },
-  { id: '38', label: '38', color: '#3b82f6' },
-  { id: 'other', label: 'Другой', color: '#06b6d4' },
-];
+const ALL_SERVER_IDS = Array.from({ length: 38 }, (_, i) => String(i + 1));
 
 const SECTIONS = [
   { id: 'trades', label: 'Торг', icon: Coins },
@@ -23,7 +19,7 @@ export default function ProfileTab() {
   const [section, setSection] = useState('trades');
   const [data, setData] = useState({ trades: null, cars: null, stocks: null });
   const [editServers, setEditServers] = useState(false);
-  const [srv, setSrv] = useState(user.servers);
+  const [srv, setSrv] = useState(user?.servers || ['32']);
 
   const load = () => {
     ['trades', 'cars', 'stocks'].forEach((t) => {
@@ -44,8 +40,17 @@ export default function ProfileTab() {
     }
   };
 
-  const toggleSrv = (id) =>
-    setSrv((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  const toggleSrv = (id) => {
+    if (srv.includes(id)) {
+      setSrv((s) => s.filter((x) => x !== id));
+    } else {
+      if (srv.length >= 5) {
+        toast('Можно выбрать не более 5 серверов');
+        return;
+      }
+      setSrv((s) => [...s, id]);
+    }
+  };
 
   const saveServers = async () => {
     try {
@@ -56,6 +61,8 @@ export default function ProfileTab() {
       toast(e.message);
     }
   };
+
+  if (!user) return null;
 
   const list = data[section];
 
@@ -80,18 +87,18 @@ export default function ProfileTab() {
           <div className="min-w-0 flex-1">
             <div className="truncate font-bold">{user.nickname}</div>
             <div className="mt-0.5 flex flex-wrap gap-1">
-              {user.servers.map((s) => {
-                const opt = SERVER_OPTIONS.find((o) => o.id === s);
-                return (
-                  <span
-                    key={s}
-                    className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
-                    style={{ background: opt?.color || '#10b981' }}
-                  >
-                    {opt?.label || s}
-                  </span>
-                );
-              })}
+              {user.servers.map((s) => (
+                <span
+                  key={s}
+                  className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+                  style={{
+                    background: s === '32' ? '#7c3aed' : s === '38' ? '#3b82f6' : '#06b6d4',
+                    boxShadow: '0 0 8px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  {s}
+                </span>
+              ))}
             </div>
           </div>
           <button
@@ -124,25 +131,30 @@ export default function ProfileTab() {
             >
               <div className="mt-4 border-t border-white/5 pt-3">
                 <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">
-                  Мои сервера
+                  Сервера (1-38, до 5 штук)
                 </div>
-                <div className="flex gap-2">
-                  {SERVER_OPTIONS.map((s) => {
-                    const on = srv.includes(s.id);
+                <div className="grid grid-cols-6 gap-1.5 max-h-48 overflow-y-auto p-1">
+                  {ALL_SERVER_IDS.map((id) => {
+                    const isSelected = srv.includes(id);
                     return (
                       <button
-                        key={s.id}
-                        onClick={() => toggleSrv(s.id)}
-                        className={`flex-1 rounded-xl py-2 text-xs font-bold transition-all ${
-                          on ? 'text-white' : 'border border-white/10 bg-white/[0.03] text-white/40'
+                        type="button"
+                        key={id}
+                        onClick={() => toggleSrv(id)}
+                        className={`h-9 w-9 rounded-lg text-xs font-bold transition-all ${
+                          isSelected 
+                            ? 'text-white bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/30' 
+                            : 'bg-white/5 border border-white/10 text-white/40 hover:bg-white/10'
                         }`}
-                        style={on ? { background: s.color, boxShadow: `0 0 12px ${s.color}70` } : undefined}
                       >
-                        {s.label}
+                        {id}
                       </button>
                     );
                   })}
                 </div>
+                <p className="text-[10px] text-white/30 mt-2 text-center">
+                  Выбрано: {srv.length} / 5
+                </p>
                 <button
                   onClick={saveServers}
                   disabled={srv.length === 0}
