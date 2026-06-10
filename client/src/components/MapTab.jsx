@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Building2, ZoomIn, ZoomOut, Layers, X } from 'lucide-react';
 import { MAP_HOUSES } from '../data/houses.js';
 import { POIS, POI_CATEGORIES } from '../data/pois.js';
-import { JOBS } from '../data/jobs.js'; // 👈 ДОБАВИТЬ ЭТУ СТРОКУ
+import { JOBS } from '../data/jobs.js';
+import { PARKINGS } from '../data/parkings.js';
 import Modal from './Modal.jsx';
 import mapImage from '../assets/map.jpg';
 
@@ -23,28 +24,40 @@ export default function MapTab() {
 
   const toggle = (id) => setActive((a) => ({ ...a, [id]: !a[id] }));
 
-  // 👇 ОБЪЕДИНЯЕМ старые POI из pois.js и новые работы из jobs.js
+  // Объединяем все точки:
+  // - Исключаем старые работы (jobs) и старые стоянки (parking) из POIS
+  // - Добавляем новые работы из JOBS
+  // - Добавляем новые стоянки из PARKINGS
   const allPois = [
-    ...POIS,
+    ...POIS.filter(p => p.category !== 'jobs' && p.category !== 'parking'),
     ...JOBS.map(job => ({
       id: `job-${job.id}`,
       category: 'jobs',
       name: job.name,
       description: job.description,
       coords: job.coords,
-    }))
+    })),
+    ...PARKINGS.map(parking => ({
+      id: `parking-${parking.id}`,
+      category: 'parking',
+      name: parking.name,
+      description: parking.description,
+      coords: parking.coords,
+    })),
   ];
 
   const visiblePois = allPois.filter((p) => active[p.category]);
-  const catOf = (p) => POI_CATEGORIES.find((c) => c.id === p.category);
   
-  // 👇 ПРАВИЛЬНЫЙ ПОДСЧЁТ КОЛИЧЕСТВА для каждого слоя
+  const catOf = (p) => POI_CATEGORIES.find((c) => c.id === p.category);
+
+  // Правильный подсчёт количества для каждого слоя
   const getCount = (categoryId) => {
     if (categoryId === 'housing') return MAP_HOUSES.length;
     if (categoryId === 'jobs') return JOBS.length;
+    if (categoryId === 'parking') return PARKINGS.length;
     return POIS.filter((p) => p.category === categoryId).length;
   };
-  
+
   const activeCount = Object.values(active).filter(Boolean).length;
 
   return (
@@ -96,11 +109,11 @@ export default function MapTab() {
               ))}
           </AnimatePresence>
 
-          {/* Маркеры POI (включая работы из jobs.js) */}
+          {/* Маркеры POI (работы, стоянки, рынки, свидания) */}
           <AnimatePresence>
             {visiblePois.map((p, i) => {
               const cat = catOf(p);
-              if (!cat) return null; // на всякий случай
+              if (!cat) return null;
               return (
                 <motion.button
                   key={p.id}
@@ -163,7 +176,7 @@ export default function MapTab() {
             </div>
             {POI_CATEGORIES.map((c) => {
               const on = active[c.id];
-              const count = getCount(c.id); // 👈 ИСПОЛЬЗУЕМ НОВУЮ ФУНКЦИЮ
+              const count = getCount(c.id);
               return (
                 <button
                   key={c.id}

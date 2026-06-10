@@ -100,42 +100,7 @@ export const POIS = [
 
 
 
-  // ---------- 🅿️ Стоянки ----------
-  {
-    id: 'park-1',
-    category: 'parking',
-    name: 'Центральная стоянка (Арзамас)',
-    description: 'Главная парковка города у мэрии. Спавн личного транспорта.',
-    coords: { top: '34%', left: '56%' },
-  },
-  {
-    id: 'park-2',
-    category: 'parking',
-    name: 'Стоянка Элитного посёлка',
-    description: 'Охраняемая парковка у въезда в Элитный.',
-    coords: { top: '21%', left: '23%' },
-  },
-  {
-    id: 'park-3',
-    category: 'parking',
-    name: 'Стоянка Лыткарино',
-    description: 'Парковка у жилых домов Лыткарино.',
-    coords: { top: '51%', left: '14%' },
-  },
-  {
-    id: 'park-4',
-    category: 'parking',
-    name: 'Стоянка Южного',
-    description: 'Большая парковка у промзоны Южного.',
-    coords: { top: '84%', left: '91%' },
-  },
-  {
-    id: 'park-5',
-    category: 'parking',
-    name: 'Штрафстоянка',
-    description: 'Сюда эвакуируют транспорт. Выкуп машины — у НПЦ на въезде.',
-    coords: { top: '44%', left: '60%' },
-  },
+
 
   // ---------- 🛒 Рынки ----------
   {
