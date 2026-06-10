@@ -97,3 +97,6 @@ export const POIS = [
     description: 'Старая тюрьма на южном острове. Атмосферно, жутковато и незабываемо.',
     coords: { top: '96.5%', left: '21.4%' },
   },
+];
+
+export { POI_CATEGORIES, POIS };

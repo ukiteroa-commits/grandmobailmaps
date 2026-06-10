@@ -5,6 +5,7 @@ import { MAP_HOUSES } from '../data/houses.js';
 import { POIS, POI_CATEGORIES } from '../data/pois.js';
 import { JOBS } from '../data/jobs.js';
 import { PARKINGS } from '../data/parkings.js';
+import { MARKETS } from '../data/markets.js';
 import Modal from './Modal.jsx';
 import mapImage from '../assets/map.jpg';
 
@@ -25,11 +26,12 @@ export default function MapTab() {
   const toggle = (id) => setActive((a) => ({ ...a, [id]: !a[id] }));
 
   // Объединяем все точки:
-  // - Исключаем старые работы (jobs) и старые стоянки (parking) из POIS
-  // - Добавляем новые работы из JOBS
-  // - Добавляем новые стоянки из PARKINGS
+  // - Оставляем из POIS только свидания (dating)
+  // - Добавляем работы из JOBS
+  // - Добавляем стоянки из PARKINGS
+  // - Добавляем рынки из MARKETS
   const allPois = [
-    ...POIS.filter(p => p.category !== 'jobs' && p.category !== 'parking'),
+    ...POIS.filter(p => p.category === 'dating'), // только свидания из старых POIS
     ...JOBS.map(job => ({
       id: `job-${job.id}`,
       category: 'jobs',
@@ -44,6 +46,13 @@ export default function MapTab() {
       description: parking.description,
       coords: parking.coords,
     })),
+    ...MARKETS.map(market => ({
+      id: `market-${market.id}`,
+      category: 'markets',
+      name: market.name,
+      description: market.description,
+      coords: market.coords,
+    })),
   ];
 
   const visiblePois = allPois.filter((p) => active[p.category]);
@@ -55,7 +64,9 @@ export default function MapTab() {
     if (categoryId === 'housing') return MAP_HOUSES.length;
     if (categoryId === 'jobs') return JOBS.length;
     if (categoryId === 'parking') return PARKINGS.length;
-    return POIS.filter((p) => p.category === categoryId).length;
+    if (categoryId === 'markets') return MARKETS.length;
+    if (categoryId === 'dating') return POIS.filter(p => p.category === 'dating').length;
+    return 0;
   };
 
   const activeCount = Object.values(active).filter(Boolean).length;
