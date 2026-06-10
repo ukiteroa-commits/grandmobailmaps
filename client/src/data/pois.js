@@ -97,6 +97,44 @@ export const POIS = [
     description: 'Старая тюрьма на южном острове. Атмосферно, жутковато и незабываемо.',
     coords: { top: '96.5%', left: '21.4%' },
   },
+
+  
+  // ---------- 🛒 Рынки ----------
+  {
+    id: 'market-1',
+    category: 'markets',
+    name: 'Дром (авторынок)',
+    coords: { top: '12.7%', left: '64.9%' },
+    description: 'Купля-продажа авто с рук.',
+  },
+  {
+    id: 'market-2',
+    category: 'markets',
+    name: 'Грандмобаил Маркет',
+    coords: { top: '27.7%', left: '63.4%' },
+    description: 'Аксессуары, скины.',
+  },
+  {
+    id: 'market-3',
+    category: 'markets',
+    name: 'Перекупы (Центральный)',
+    coords: { top: '33.8%', left: '48.3%' },
+    description: 'Перекупают остатки с работ.',
+  },
+  {
+    id: 'market-4',
+    category: 'markets',
+    name: 'Перекупы (Южный)',
+    coords: { top: '82.7%', left: '88.6%' },
+    description: 'Перекупы в Южном районе.',
+  },
+  {
+    id: 'market-5',
+    category: 'markets',
+    name: 'Чёрный рынок (ОПГ)',
+    coords: { top: '45.1%', left: '11.6%' },
+    description: 'Нелегальный товар.',
+  },
 ];
 
 export { POI_CATEGORIES, POIS };
