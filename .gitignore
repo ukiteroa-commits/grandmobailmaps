@@ -1,0 +1,26 @@
+# Зависимости
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Сборка
+client/dist/
+dist/
+build/
+
+# Логи
+*.log
+npm-debug.log*
+
+# Окружение
+.env
+.env.local
+.env.*.local
+
+# Системные
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

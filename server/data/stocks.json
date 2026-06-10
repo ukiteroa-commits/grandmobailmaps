@@ -1,0 +1,29 @@
+[
+  {
+    "id": "s1a2b3c4-0002-4000-8000-000000000001",
+    "server": "32",
+    "business_name": "АЗС №5",
+    "stock_number": "12",
+    "price_per_share": "75000",
+    "contact": "@azs_invest",
+    "created_at": "2026-06-09T10:00:00.000Z"
+  },
+  {
+    "id": "s1a2b3c4-0002-4000-8000-000000000002",
+    "server": "32",
+    "business_name": "Автосалон \"Премиум\"",
+    "stock_number": "3",
+    "price_per_share": "240000",
+    "contact": "@premium_auto32",
+    "created_at": "2026-06-09T18:20:00.000Z"
+  },
+  {
+    "id": "s1a2b3c4-0002-4000-8000-000000000003",
+    "server": "32",
+    "business_name": "Магазин 24/7 (Южный)",
+    "stock_number": "8",
+    "price_per_share": "55000",
+    "contact": "t.me/shop247_32",
+    "created_at": "2026-06-10T07:30:00.000Z"
+  }
+]
