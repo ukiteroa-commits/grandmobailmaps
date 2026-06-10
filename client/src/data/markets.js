@@ -6,7 +6,7 @@ export const MARKETS = [
   {
     id: 1,
     name: 'Дром (авторынок)',
-    coords: { top: '13.0%', left: '64.8%' },
+    coords: { top: '12.7%', left: '64.9%' },
     color: '#10b981',
     category: 'markets',
     onMap: true,
@@ -14,8 +14,8 @@ export const MARKETS = [
   },
   {
     id: 2,
-    name: 'Грандмаркет (аксессуары, скины)',
-    coords: { top: '28.1%', left: '63.7%' },
+    name: 'Грандмобаил Маркет (аксессуары, скины)',
+    coords: { top: '27.7%', left: '63.4%' },
     color: '#10b981',
     category: 'markets',
     onMap: true,
@@ -24,16 +24,16 @@ export const MARKETS = [
   {
     id: 3,
     name: 'Перекупы (Центральный рынок)',
-    coords: { top: '34.0%', left: '48.2%' },
+    coords: { top: '33.8%', left: '48.3%' },
     color: '#10b981',
     category: 'markets',
     onMap: true,
-    description: 'Продажа барахла с работ.',
+    description: 'Перекупают остатки с работ. Продажа барахла.',
   },
   {
     id: 4,
     name: 'Перекупы (Южный)',
-    coords: { top: '82.2%', left: '88.9%' },
+    coords: { top: '82.7%', left: '88.6%' },
     color: '#10b981',
     category: 'markets',
     onMap: true,
@@ -42,7 +42,7 @@ export const MARKETS = [
   {
     id: 5,
     name: 'Чёрный рынок (ОПГ)',
-    coords: { top: '45.3%', left: '11.6%' },
+    coords: { top: '45.1%', left: '11.6%' },
     color: '#10b981',
     category: 'markets',
     onMap: true,
