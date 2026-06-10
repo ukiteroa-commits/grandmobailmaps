@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Building2, ZoomIn, ZoomOut, Layers, X } from 'lucide-react';
 import { MAP_HOUSES } from '../data/houses.js';
 import { POIS, POI_CATEGORIES } from '../data/pois.js';
+import { JOBS } from '../data/jobs.js'; // 👈 ДОБАВИТЬ ЭТУ СТРОКУ
 import Modal from './Modal.jsx';
 import mapImage from '../assets/map.jpg';
 
@@ -21,8 +22,29 @@ export default function MapTab() {
   });
 
   const toggle = (id) => setActive((a) => ({ ...a, [id]: !a[id] }));
-  const visiblePois = POIS.filter((p) => active[p.category]);
+
+  // 👇 ОБЪЕДИНЯЕМ старые POI из pois.js и новые работы из jobs.js
+  const allPois = [
+    ...POIS,
+    ...JOBS.map(job => ({
+      id: `job-${job.id}`,
+      category: 'jobs',
+      name: job.name,
+      description: job.description,
+      coords: job.coords,
+    }))
+  ];
+
+  const visiblePois = allPois.filter((p) => active[p.category]);
   const catOf = (p) => POI_CATEGORIES.find((c) => c.id === p.category);
+  
+  // 👇 ПРАВИЛЬНЫЙ ПОДСЧЁТ КОЛИЧЕСТВА для каждого слоя
+  const getCount = (categoryId) => {
+    if (categoryId === 'housing') return MAP_HOUSES.length;
+    if (categoryId === 'jobs') return JOBS.length;
+    return POIS.filter((p) => p.category === categoryId).length;
+  };
+  
   const activeCount = Object.values(active).filter(Boolean).length;
 
   return (
@@ -74,10 +96,11 @@ export default function MapTab() {
               ))}
           </AnimatePresence>
 
-          {/* Маркеры POI */}
+          {/* Маркеры POI (включая работы из jobs.js) */}
           <AnimatePresence>
             {visiblePois.map((p, i) => {
               const cat = catOf(p);
+              if (!cat) return null; // на всякий случай
               return (
                 <motion.button
                   key={p.id}
@@ -140,10 +163,7 @@ export default function MapTab() {
             </div>
             {POI_CATEGORIES.map((c) => {
               const on = active[c.id];
-              const count =
-                c.id === 'housing'
-                  ? MAP_HOUSES.length
-                  : POIS.filter((p) => p.category === c.id).length;
+              const count = getCount(c.id); // 👈 ИСПОЛЬЗУЕМ НОВУЮ ФУНКЦИЮ
               return (
                 <button
                   key={c.id}
