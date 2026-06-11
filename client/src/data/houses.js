@@ -124,15 +124,15 @@ export const HOUSES = [
     color: '#ef4444',
     onMap: true,
   },
-  {
-    id: 14,
-    name: 'Озёрный',
-    houses: '1-35',
-    apartments: null,
-    coords: { top: '34.5%', left: '25.5%' },
-    color: '#06b6d4',
-    onMap: true,
-  },
+{
+  id: 14,
+  name: 'Озёрный',
+  houses: '506-560',  // ← меняем с '1-35' на '506-560'
+  apartments: null,
+  coords: { top: '34.5%', left: '25.5%' },
+  color: '#06b6d4',
+  onMap: true,
+},
   {
     id: 15,
     name: 'Рыболовная-1',
