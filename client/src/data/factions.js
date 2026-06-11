@@ -26,7 +26,7 @@ export const FACTIONS = [
   {
     id: 4,
     name: 'Ореховское ОПГ',
-    coords: { top: '26.5%', left: '88.0%' },
+    coords: { top: '82.2%', left: '81.8%' },
     color: '#ef4444',
     description: 'Ореховская организованная преступная группировка',
     onMap: true,
@@ -34,7 +34,7 @@ export const FACTIONS = [
   {
     id: 5,
     name: 'Курганское ОПГ',
-    coords: { top: '48.8%', left: '10.0%' },
+    coords: { top: '90.4%', left: '92.9%' },
     color: '#ef4444',
     description: 'Курганская организованная преступная группировка',
     onMap: true,
@@ -42,7 +42,7 @@ export const FACTIONS = [
   {
     id: 6,
     name: 'ОПГ Кавказа',
-    coords: { top: '90.4%', left: '92.9%' },
+    coords: { top: '82.6%', left: '90.6%' },
     color: '#ef4444',
     description: 'Кавказская организованная преступная группировка',
     onMap: true,
@@ -50,7 +50,7 @@ export const FACTIONS = [
   {
     id: 7,
     name: 'МВД Южный',
-    coords: { top: '82.6%', left: '90.6%' },
+    coords: { top: '37.2%', left: '57.4%' },
     color: '#1e3a5f',
     description: 'Полицейское управление района Южный',
     onMap: true,
@@ -66,7 +66,7 @@ export const FACTIONS = [
   {
     id: 9,
     name: 'ФСБ',
-    coords: { top: '37.2%', left: '57.4%' },
+    coords: { top: '26.5%', left: '88.0%' },
     color: '#1e40af',
     description: 'Федеральная служба безопасности, секретные операции',
     onMap: true,
