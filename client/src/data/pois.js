@@ -8,6 +8,7 @@ export const POI_CATEGORIES = [
   { id: 'jobs', label: 'Работы', emoji: '💼', color: '#f59e0b' },
   { id: 'parking', label: 'Стоянки', emoji: '🅿️', color: '#3b82f6' },
   { id: 'markets', label: 'Рынки', emoji: '🛒', color: '#10b981' },
+  { id: 'factions', label: 'Фракции', emoji: '👮', color: '#ef4444' }, // ← ДОБАВЬТЕ ЭТУ СТРОКУ
 ];
 
 export const POIS = [
