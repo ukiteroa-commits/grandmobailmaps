@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Map, Car, Coins, Tent, MessageCircle, CheckCircle2, UserCircle2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '../auth/AuthContext.jsx';
+import SupportButton from './SupportButton.jsx';
 
 // ---- Toast context ----
 const ToastContext = createContext(() => {});
@@ -132,6 +133,9 @@ export default function Layout() {
             ))}
           </div>
         </nav>
+
+        {/* Кнопка поддержки */}
+        <SupportButton />
 
         {/* Toast */}
         <AnimatePresence>
