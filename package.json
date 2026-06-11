@@ -1,4 +1,8 @@
 {
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Build completed'"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.1",
     "bcryptjs": "^3.0.3",
