@@ -26,8 +26,12 @@ export default function MapTab() {
   const toggle = (id) => setActive((a) => ({ ...a, [id]: !a[id] }));
 
   // Объединяем все точки:
+  // - Оставляем из POIS только свидания (dating)
+  // - Добавляем работы из JOBS
+  // - Добавляем стоянки из PARKINGS
+  // - Добавляем рынки из MARKETS
   const allPois = [
-    ...POIS.filter(p => p.category === 'dating'),
+    ...POIS.filter(p => p.category === 'dating'), // только свидания из старых POIS
     ...JOBS.map(job => ({
       id: `job-${job.id}`,
       category: 'jobs',
@@ -55,6 +59,7 @@ export default function MapTab() {
   
   const catOf = (p) => POI_CATEGORIES.find((c) => c.id === p.category);
 
+  // Правильный подсчёт количества для каждого слоя
   const getCount = (categoryId) => {
     if (categoryId === 'housing') return MAP_HOUSES.length;
     if (categoryId === 'jobs') return JOBS.length;
@@ -65,29 +70,6 @@ export default function MapTab() {
   };
 
   const activeCount = Object.values(active).filter(Boolean).length;
-
-  // Функция для транслитерации названия посёлка в имя папки
-  const getVillageFolder = (name) => {
-    const map = {
-      'Элитный поселок': 'elitny',
-      'Эдово': 'edovo',
-      'Богатырево': 'bogatyrevo',
-      'Батырево': 'batyrevo',
-      'Арзамас': 'arzamas',
-      'Дачи (восток Арзамаса)': 'dachi',
-      'Южный берег (Арзамас)': 'yuzhny-bereg',
-      'Лыткарино': 'lytkarino',
-      'Гарель': 'garel',
-      'Корякино': 'koryakino',
-      'Бусаево': 'busaevo',
-      'Южный': 'yuzhny',
-      'Горячая Штучка': 'goryachaya',
-      'Озёрный': 'ozerny',
-      'Рыболовная-1': 'rybolovnaya1',
-      'Рыболовная-2': 'rybolovnaya2',
-    };
-    return map[name] || name.toLowerCase().replace(/[^a-zа-яё]/gi, '');
-  };
 
   return (
     <div className="relative h-[calc(100vh-3.5rem-5rem)] w-full overflow-auto">
@@ -138,7 +120,7 @@ export default function MapTab() {
               ))}
           </AnimatePresence>
 
-          {/* Маркеры POI */}
+          {/* Маркеры POI (работы, стоянки, рынки, свидания) */}
           <AnimatePresence>
             {visiblePois.map((p, i) => {
               const cat = catOf(p);
@@ -233,6 +215,7 @@ export default function MapTab() {
                   </span>
                   <span className="flex-1">{c.label}</span>
                   <span className="text-[10px] text-white/30">{count}</span>
+                  {/* Переключатель */}
                   <span
                     className="relative h-4 w-7 rounded-full transition-colors"
                     style={{ background: on ? c.color : 'rgba(255,255,255,0.15)' }}
@@ -273,10 +256,41 @@ export default function MapTab() {
         onClose={() => setSelected(null)}
         title={selected?.name}
         accentColor={selected?.color}
-        houses={selected?.houses}
-        apartments={selected?.apartments}
-        villageName={getVillageFolder(selected?.name || '')}
-      />
+      >
+        {selected && (
+          <div className="space-y-3">
+            <div className="glass-card flex items-center gap-3 p-4">
+              <div
+                className="flex h-10 w-10 items-center justify-center rounded-xl"
+                style={{ background: `${selected.color}20`, color: selected.color }}
+              >
+                <Home size={20} />
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wider text-white/40">🏠 Дома</div>
+                <div className="text-base font-bold">
+                  {selected.houses ? `№${selected.houses}` : 'Нет домов'}
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-card flex items-center gap-3 p-4">
+              <div
+                className="flex h-10 w-10 items-center justify-center rounded-xl"
+                style={{ background: `${selected.color}20`, color: selected.color }}
+              >
+                <Building2 size={20} />
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wider text-white/40">🏢 Квартиры</div>
+                <div className="text-base font-bold">
+                  {selected.apartments ? `№${selected.apartments}` : 'Нет квартир'}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
 
       {/* Модалка POI */}
       <Modal
@@ -284,7 +298,23 @@ export default function MapTab() {
         onClose={() => setSelectedPoi(null)}
         title={selectedPoi?.name}
         accentColor={selectedPoi ? catOf(selectedPoi).color : '#7c3aed'}
-      />
+      >
+        {selectedPoi && (
+          <div className="space-y-3">
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold"
+              style={{
+                background: `${catOf(selectedPoi).color}20`,
+                color: catOf(selectedPoi).color,
+                border: `1px solid ${catOf(selectedPoi).color}40`,
+              }}
+            >
+              {catOf(selectedPoi).emoji} {catOf(selectedPoi).label}
+            </div>
+            <p className="text-sm leading-relaxed text-white/75">{selectedPoi.description}</p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
