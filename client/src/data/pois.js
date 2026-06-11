@@ -12,7 +12,6 @@ export const POI_CATEGORIES = [
 
 export const POIS = [
   // ---------- ❤️ Места для свиданий ----------
-  // Координаты сняты с меток игрока (скрин dating-reference)
   {
     id: 'date-1',
     category: 'dating',
@@ -98,43 +97,135 @@ export const POIS = [
     coords: { top: '96.5%', left: '21.4%' },
   },
 
-  
+  // ---------- 💼 Работы ----------
+  {
+    id: 'job-1',
+    category: 'jobs',
+    name: 'Почтовое отделение',
+    description: 'Работа почтальоном: развоз посылок по адресам. 50-70k$ за смену, без рисков.',
+    coords: { top: '31%', left: '50%' },
+  },
+  {
+    id: 'job-2',
+    category: 'jobs',
+    name: 'Автобусный парк',
+    description: 'Маршруты по всему городу. Стабильная оплата, нужна лицензия категории D.',
+    coords: { top: '38%', left: '57%' },
+  },
+  {
+    id: 'job-3',
+    category: 'jobs',
+    name: 'Грузоперевозки (дальнобой)',
+    description: 'Фуры из промзоны: чем дальше рейс, тем больше платят.',
+    coords: { top: '47%', left: '75%' },
+  },
+  {
+    id: 'job-4',
+    category: 'jobs',
+    name: 'Шахта (Гарель)',
+    description: 'Добыча руды киркой. Тяжело, но руда дорого сдаётся на заводе.',
+    coords: { top: '57%', left: '83%' },
+  },
+  {
+    id: 'job-5',
+    category: 'jobs',
+    name: 'Порт (грузчик)',
+    description: 'Разгрузка контейнеров на юго-западе. Оплата сразу после смены.',
+    coords: { top: '80%', left: '8%' },
+  },
+  {
+    id: 'job-6',
+    category: 'jobs',
+    name: 'Ферма (Корякино)',
+    description: 'Сбор урожая и работа на тракторе. Спокойная работа для новичков.',
+    coords: { top: '66%', left: '52%' },
+  },
+  {
+    id: 'job-7',
+    category: 'jobs',
+    name: 'Инкассатор (банк)',
+    description: 'Развоз мешков с деньгами по точкам. 15-40k$ за рейс, нужен 3+ уровень.',
+    coords: { top: '35%', left: '47%' },
+  },
+  {
+    id: 'job-8',
+    category: 'jobs',
+    name: 'Завод Tesla',
+    description: 'Сборка электрокаров в Южном. Высокая зарплата, нужна квалификация.',
+    coords: { top: '90%', left: '78%' },
+  },
+
+  // ---------- 🅿️ Стоянки ----------
+  {
+    id: 'park-1',
+    category: 'parking',
+    name: 'Центральная стоянка (Арзамас)',
+    description: 'Главная парковка города у мэрии. Спавн личного транспорта.',
+    coords: { top: '34%', left: '56%' },
+  },
+  {
+    id: 'park-2',
+    category: 'parking',
+    name: 'Стоянка Элитного посёлка',
+    description: 'Охраняемая парковка у въезда в Элитный.',
+    coords: { top: '21%', left: '23%' },
+  },
+  {
+    id: 'park-3',
+    category: 'parking',
+    name: 'Стоянка Лыткарино',
+    description: 'Парковка у жилых домов Лыткарино.',
+    coords: { top: '51%', left: '14%' },
+  },
+  {
+    id: 'park-4',
+    category: 'parking',
+    name: 'Стоянка Южного',
+    description: 'Большая парковка у промзоны Южного.',
+    coords: { top: '84%', left: '91%' },
+  },
+  {
+    id: 'park-5',
+    category: 'parking',
+    name: 'Штрафстоянка',
+    description: 'Сюда эвакуируют транспорт. Выкуп машины — у НПЦ на въезде.',
+    coords: { top: '44%', left: '60%' },
+  },
+
   // ---------- 🛒 Рынки ----------
   {
-    id: 'market-1',
+    id: 'mark-1',
     category: 'markets',
-    name: 'Дром (авторынок)',
-    coords: { top: '12.7%', left: '64.9%' },
-    description: 'Купля-продажа авто с рук.',
+    name: 'Центральный рынок',
+    description: 'Продукты, расходники и торговля между игроками в центре Арзамаса.',
+    coords: { top: '30%', left: '55%' },
   },
   {
-    id: 'market-2',
+    id: 'mark-2',
     category: 'markets',
-    name: 'Грандмобаил Маркет',
-    coords: { top: '27.7%', left: '63.4%' },
-    description: 'Аксессуары, скины.',
+    name: 'Авторынок',
+    description: 'Купля-продажа авто с рук. Осторожно: проверяйте машины на угон!',
+    coords: { top: '40%', left: '44%' },
   },
   {
-    id: 'market-3',
+    id: 'mark-3',
     category: 'markets',
-    name: 'Перекупы (Центральный)',
-    coords: { top: '33.8%', left: '48.3%' },
-    description: 'Перекупают остатки с работ.',
+    name: 'Чёрный рынок',
+    description: 'Нелегальный товар у барыги. Локация меняется, спросите у бывалых.',
+    coords: { top: '62%', left: '30%' },
   },
   {
-    id: 'market-4',
+    id: 'mark-4',
     category: 'markets',
-    name: 'Перекупы (Южный)',
-    coords: { top: '82.7%', left: '88.6%' },
-    description: 'Перекупы в Южном районе.',
+    name: 'Рыбный рынок (порт)',
+    description: 'Сдача улова и снасти. Лучшие цены на редкую рыбу.',
+    coords: { top: '76%', left: '12%' },
   },
   {
-    id: 'market-5',
+    id: 'mark-5',
     category: 'markets',
-    name: 'Чёрный рынок (ОПГ)',
-    coords: { top: '45.1%', left: '11.6%' },
-    description: 'Нелегальный товар.',
+    name: 'Рынок Южного',
+    description: 'Местный рынок промтоваров рядом с заводом.',
+    coords: { top: '87%', left: '72%' },
   },
 ];
-
-export { POI_CATEGORIES, POIS };
