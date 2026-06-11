@@ -1,10 +1,27 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, Home, Building2, Image, Search } from 'lucide-react';
+import { X, Home, Building2, Image, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Modal({ open, onClose, title, accentColor = '#7c3aed', houses, apartments, villageName, description }) {
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Список домов с общими скриншотами
+  const commonHouses = [413, 414, 415, 416, 419, 425, 421, 403, 401, 402, 408, 399, 393, 395, 396, 397];
+  
+  // Массив общих скриншотов
+  const defaultScreenshots = [
+    '/screenshots/default_house_1.jpg',
+    '/screenshots/default_house_2.jpg',
+  ];
+
+  const getScreenshots = (village, number) => {
+    if (commonHouses.includes(number)) {
+      return defaultScreenshots;
+    }
+    return [`/screenshots/${village}_${number}.jpg`];
+  };
 
   // Генерация списка из диапазона
   const getListFromRange = (range) => {
@@ -29,15 +46,24 @@ export default function Modal({ open, onClose, title, accentColor = '#7c3aed', h
     searchQuery === '' || num.toString().includes(searchQuery)
   );
 
-  const getScreenshotUrl = (village, number) => {
-    return `/screenshots/${village}_${number}.jpg`;
-  };
-
-  // Правильное определение POI:
-  // 1. Если есть description И (нет houses/apartments ИЛИ это не посёлок)
-  // 2. ИЛИ если передан явный флаг isPoi
   const hasHousesOrApartments = (houseNumbers.length > 0 || apartmentNumbers.length > 0);
   const isPoi = description && !hasHousesOrApartments;
+
+  const screenshots = selectedHouse ? getScreenshots(villageName, selectedHouse) : [];
+  const hasMultipleScreenshots = screenshots.length > 1;
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % screenshots.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + screenshots.length) % screenshots.length);
+  };
+
+  const handleHouseSelect = (num) => {
+    setSelectedHouse(selectedHouse === num ? null : num);
+    setCurrentImageIndex(0);
+  };
 
   return (
     <AnimatePresence>
@@ -121,7 +147,7 @@ export default function Modal({ open, onClose, title, accentColor = '#7c3aed', h
                       {filteredHouses.map((num) => (
                         <button
                           key={num}
-                          onClick={() => setSelectedHouse(selectedHouse === num ? null : num)}
+                          onClick={() => handleHouseSelect(num)}
                           className={`p-2 rounded-lg text-xs font-bold transition-all ${
                             selectedHouse === num
                               ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white'
@@ -135,27 +161,71 @@ export default function Modal({ open, onClose, title, accentColor = '#7c3aed', h
                   </div>
                 )}
 
-                {/* Скриншот выбранного дома */}
-                {selectedHouse && villageName && (
+                {/* Скриншот с листалкой */}
+                {selectedHouse && screenshots.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="mt-4 p-3 bg-white/5 rounded-xl"
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Image size={16} className="text-cyan-400" />
-                      <span className="text-sm font-semibold">Дом/Квартира №{selectedHouse}</span>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Image size={16} className="text-cyan-400" />
+                        <span className="text-sm font-semibold">
+                          {commonHouses.includes(selectedHouse) ? 'Скриншот (листайте)' : `Дом/Квартира №${selectedHouse}`}
+                        </span>
+                      </div>
+                      {hasMultipleScreenshots && (
+                        <span className="text-[10px] text-white/40">
+                          {currentImageIndex + 1} / {screenshots.length}
+                        </span>
+                      )}
                     </div>
-                    <img
-                      src={getScreenshotUrl(villageName, selectedHouse)}
-                      alt={`Объект ${selectedHouse}`}
-                      className="w-full rounded-lg border border-white/20"
-                      onError={(e) => {
-                        e.target.src = 'https://placehold.co/600x400/1a1a2e/ffffff?text=Скриншот+пока+отсутствует';
-                      }}
-                    />
+
+                    {/* Карусель изображений */}
+                    <div className="relative">
+                      <img
+                        src={screenshots[currentImageIndex]}
+                        alt={`Объект ${selectedHouse}`}
+                        className="w-full rounded-lg border border-white/20"
+                        onError={(e) => {
+                          e.target.src = 'https://placehold.co/600x400/1a1a2e/ffffff?text=Скриншот+пока+отсутствует';
+                        }}
+                      />
+                      
+                      {/* Кнопки листания */}
+                      {hasMultipleScreenshots && (
+                        <>
+                          <button
+                            onClick={prevImage}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 rounded-full p-1.5 hover:bg-black/80 transition-all"
+                          >
+                            <ChevronLeft size={20} className="text-white" />
+                          </button>
+                          <button
+                            onClick={nextImage}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 rounded-full p-1.5 hover:bg-black/80 transition-all"
+                          >
+                            <ChevronRight size={20} className="text-white" />
+                          </button>
+                          {/* Индикаторы */}
+                          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+                            {screenshots.map((_, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => setCurrentImageIndex(idx)}
+                                className={`h-1.5 w-1.5 rounded-full transition-all ${
+                                  idx === currentImageIndex ? 'bg-white w-3' : 'bg-white/40'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    
                     <p className="text-[10px] text-white/40 text-center mt-2">
-                      Скриншот объекта №{selectedHouse}
+                      {hasMultipleScreenshots ? '← Листайте стрелками →' : `Скриншот объекта №${selectedHouse}`}
                     </p>
                   </motion.div>
                 )}
@@ -173,7 +243,7 @@ export default function Modal({ open, onClose, title, accentColor = '#7c3aed', h
                       {filteredApartments.map((num) => (
                         <button
                           key={num}
-                          onClick={() => setSelectedHouse(selectedHouse === num ? null : num)}
+                          onClick={() => handleHouseSelect(num)}
                           className={`p-2 rounded-lg text-xs font-bold transition-all ${
                             selectedHouse === num
                               ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white'
