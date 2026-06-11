@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "scripts": {
     "build": "echo 'Build completed'"
   },
