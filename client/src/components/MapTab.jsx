@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ZoomIn, ZoomOut, Layers, X } from 'lucide-react';
 import { MAP_HOUSES } from '../data/houses.js';
@@ -37,11 +37,30 @@ export default function MapTab() {
     }
   };
 
+  // Объединяем все POI из разных источников
   const allPois = [
     ...POIS.filter(p => p.category === 'dating'),
-    ...JOBS.map(job => ({ id: `job-${job.id}`, category: 'jobs', name: job.name, description: job.description, coords: job.coords })),
-    ...PARKINGS.map(parking => ({ id: `parking-${parking.id}`, category: 'parking', name: parking.name, description: parking.description, coords: parking.coords })),
-    ...MARKETS.map(market => ({ id: `market-${market.id}`, category: 'markets', name: market.name, description: market.description, coords: market.coords })),
+    ...JOBS.map(job => ({ 
+      id: `job-${job.id}`, 
+      category: 'jobs', 
+      name: job.name, 
+      description: job.description, 
+      coords: job.coords 
+    })),
+    ...PARKINGS.map(parking => ({ 
+      id: `parking-${parking.id}`, 
+      category: 'parking', 
+      name: parking.name, 
+      description: parking.description, 
+      coords: parking.coords 
+    })),
+    ...MARKETS.map(market => ({ 
+      id: `market-${market.id}`, 
+      category: 'markets', 
+      name: market.name, 
+      description: market.description, 
+      coords: market.coords 
+    })),
   ];
 
   const visiblePois = allPois.filter((p) => active[p.category]);
@@ -277,12 +296,13 @@ export default function MapTab() {
         villageName={getVillageFolder(selected?.name || '')}
       />
 
-      {/* Модалка POI */}
+      {/* Модалка POI (с описанием) */}
       <Modal
         open={!!selectedPoi}
         onClose={() => setSelectedPoi(null)}
         title={selectedPoi?.name}
         accentColor={selectedPoi ? catOf(selectedPoi).color : '#7c3aed'}
+        description={selectedPoi?.description}
       />
     </div>
   );
