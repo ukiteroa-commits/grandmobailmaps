@@ -118,7 +118,7 @@ export const HOUSES = [
   {
     id: 13,
     name: 'Горячая Штучка',
-    houses: '1-40',
+    houses: '388-427',
     apartments: null,
     coords: { top: '15.5%', left: '37%' },
     color: '#ef4444',
@@ -136,7 +136,7 @@ export const HOUSES = [
   {
     id: 15,
     name: 'Рыболовная-1',
-    houses: '1-30',
+    houses: '433-466',
     apartments: null,
     coords: { top: '29%', left: '71%' },
     color: '#14b8a6',
@@ -145,7 +145,7 @@ export const HOUSES = [
   {
     id: 16,
     name: 'Рыболовная-2',
-    houses: '1-25',
+    houses: '472-494',
     apartments: null,
     coords: { top: '81.5%', left: '9%' },
     color: '#0ea5e9',
