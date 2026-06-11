@@ -6,6 +6,7 @@ import { POIS, POI_CATEGORIES } from '../data/pois.js';
 import { JOBS } from '../data/jobs.js';
 import { PARKINGS } from '../data/parkings.js';
 import { MARKETS } from '../data/markets.js';
+import { FACTIONS } from '../data/factions.js';
 import Modal from './Modal.jsx';
 import GlobalSearch from './GlobalSearch.jsx';
 import mapImage from '../assets/map.jpg';
@@ -23,6 +24,7 @@ export default function MapTab() {
     jobs: false,
     parking: false,
     markets: false,
+    factions: false,
   });
 
   const toggle = (id) => setActive((a) => ({ ...a, [id]: !a[id] }));
@@ -61,6 +63,13 @@ export default function MapTab() {
       description: market.description, 
       coords: market.coords 
     })),
+    ...FACTIONS.map(faction => ({ 
+      id: `faction-${faction.id}`, 
+      category: 'factions', 
+      name: faction.name, 
+      description: faction.description, 
+      coords: faction.coords 
+    })),
   ];
 
   const visiblePois = allPois.filter((p) => active[p.category]);
@@ -72,6 +81,7 @@ export default function MapTab() {
     if (categoryId === 'parking') return PARKINGS.length;
     if (categoryId === 'markets') return MARKETS.length;
     if (categoryId === 'dating') return POIS.filter(p => p.category === 'dating').length;
+    if (categoryId === 'factions') return FACTIONS.length;
     return 0;
   };
 
@@ -157,7 +167,7 @@ export default function MapTab() {
               ))}
           </AnimatePresence>
 
-          {/* Маркеры POI */}
+          {/* Маркеры POI (включая фракции) */}
           <AnimatePresence>
             {visiblePois.map((p, i) => {
               const cat = catOf(p);
